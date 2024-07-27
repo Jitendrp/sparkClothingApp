@@ -101,7 +101,7 @@ const HomePage = () => {
         data-testid="latestproductsheading"
         className="latest-products text-start"
       >
-        Latest Products
+        All Latest Products
       </h3>
       <div className="latest-products-section">
         <div className="row">
