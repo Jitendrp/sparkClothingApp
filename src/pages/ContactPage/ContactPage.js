@@ -17,12 +17,17 @@ const ContactPage = () => {
     isError: false,
     isSaved: false
   });
+  const apikey = '$2a$10$h3/JXpfIVLOC7GB8AD6Q0ODcusMSM8oVcIHS8Ohj3pbFX6ehSQsJ.'
   // fetch the contact data from server using axios
   useEffect(() => {
-    axios.get('http://localhost:3100/contactData').then((res) => {
+    axios.get('https://api.jsonbin.io/v3/b/66a5e040e41b4d34e41819b1?meta=false', {
+      headers: {
+        'X-MASTER-KEY': apikey
+      }
+    }).then((res) => {
       detailsDispatch({
         type: 'contact_details',
-        payload: res.data
+        payload: res.data.contactData
       });
       setLoading(false);
     });
