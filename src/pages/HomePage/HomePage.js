@@ -9,32 +9,45 @@ import { Helmet } from 'react-helmet-async';
 const HomePage = () => {
   // intialize the items using useReducer Hook
   const [items, itemsDispatch] = useReducer(itemReducer, []);
+  const apiKey = '$2a$10$h3/JXpfIVLOC7GB8AD6Q0ODcusMSM8oVcIHS8Ohj3pbFX6ehSQsJ.';
   // useEffect Hook is used to render the data once the component gets loaded
   useEffect(() => {
     // fetching the Latest Products from API with Limit of three items becaouse of carousel
-    axios.get('http://localhost:3100/products?_limit=3').then((res) => {
-      // console.log(res.data);
-      // disptach the items to reducer
-      itemsDispatch({
-        type: 'LIST_ITEMS',
-        payload: res.data
+    axios
+      .get('https://api.jsonbin.io/v3/b/66a5e040e41b4d34e41819b1?meta=false', {
+        headers: {
+          'X-MASTER-KEY': apiKey
+        }
+      })
+      .then((res) => {
+        // console.log(res.data);
+        // disptach the items to reducer
+        itemsDispatch({
+          type: 'LIST_ITEMS',
+          payload: res.data.products.slice(0, 3)
+        });
       });
-    });
   }, []);
   // function to handle view All button click
   const handleClickViewAll = () => {
     // Fetching All the Products from API
-    axios.get('http://localhost:3100/products').then((res) => {
-      // disptach the products to the reducer
-      itemsDispatch({
-        type: 'LIST_ITEMS',
-        payload: res.data
+    axios
+      .get('https://api.jsonbin.io/v3/b/66a5e040e41b4d34e41819b1?meta=false', {
+        headers: {
+          'X-MASTER-KEY': apiKey
+        }
+      })
+      .then((res) => {
+        // disptach the products to the reducer
+        itemsDispatch({
+          type: 'LIST_ITEMS',
+          payload: res.data.products
+        });
       });
-    });
   };
   return (
     <>
-      { /* page title using Helmet */}
+      {/* page title using Helmet */}
       <Helmet>
         <title>HomePage</title>
       </Helmet>
@@ -56,8 +69,12 @@ const HomePage = () => {
                   />
                   <div className="carousel-caption d-none d-md-block">
                     {/* displaying the item name and description */}
-                    <h4 data-testid="productName" className="text-dark">{item.name}</h4>
-                    <p data-testid="productDesc" className="text-dark">{item.description}</p>
+                    <h4 data-testid="productName" className="text-dark">
+                      {item.name}
+                    </h4>
+                    <p data-testid="productDesc" className="text-dark">
+                      {item.description}
+                    </p>
                     <button
                       data-testid="browse-products"
                       className="btn btn-danger"
